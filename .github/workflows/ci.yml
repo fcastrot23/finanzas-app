@@ -1,0 +1,128 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "feat/api-*"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ── Python (API) ─────────────────────────────────────────────────────────────
+  api:
+    name: API — lint · type · test · audit
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/api
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+
+      - name: Install Python deps
+        run: uv sync
+
+      - name: Lint (ruff)
+        run: uv run ruff check .
+
+      - name: Format check (ruff)
+        run: uv run ruff format --check .
+
+      - name: Type check (mypy)
+        run: uv run mypy app main.py
+        continue-on-error: true  # non-blocking while stubs are in place
+
+      - name: Security audit (pip-audit)
+        run: uv run pip-audit
+        continue-on-error: true  # non-blocking; alert only
+
+      - name: Start Firebase Emulator + run tests
+        uses: w9jds/setup-firebase@main
+        with:
+          tools: emulator
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN || '' }}
+        continue-on-error: true  # emulator step optional in CI; unit tests run without it
+
+      - name: Unit tests (no emulator)
+        run: uv run pytest tests/unit -v
+        env:
+          FIRESTORE_EMULATOR_HOST: ""
+
+      - name: Component tests (with emulator)
+        run: |
+          firebase emulators:exec \
+            --project finanzas-dev \
+            --only firestore,auth \
+            "uv run pytest tests/component -v"
+        env:
+          FIRESTORE_EMULATOR_HOST: localhost:8080
+          FIREBASE_PROJECT_ID: finanzas-dev
+        continue-on-error: true  # optional until emulator is reliable in CI
+
+  # ── JavaScript / TypeScript ───────────────────────────────────────────────────
+  js:
+    name: JS — install · audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "latest"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install pnpm deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Security audit (npm audit via pnpm)
+        run: pnpm audit --audit-level=high
+        continue-on-error: true  # non-blocking; inform only
+
+  # ── OpenAPI contract ──────────────────────────────────────────────────────────
+  contract:
+    name: OpenAPI — verify gen:api succeeds
+    runs-on: ubuntu-latest
+    needs: api
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "latest"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install pnpm deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Python deps
+        working-directory: apps/api
+        run: uv sync
+
+      - name: Start API (background) and generate client
+        run: |
+          cd apps/api && uv run uvicorn main:app --host 0.0.0.0 --port 8000 &
+          sleep 5
+          pnpm gen:api
+        env:
+          FIRESTORE_EMULATOR_HOST: ""  # disable Firestore on startup
+
+      - name: Verify packages/api-client/src/schema.ts was generated
+        run: test -f packages/api-client/src/schema.ts && echo "schema.ts OK"

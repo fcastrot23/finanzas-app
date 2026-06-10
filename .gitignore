@@ -1,0 +1,21 @@
+# secrets / env
+.env
+*.env
+!*.env.example
+.DS_Store
+# python
+__pycache__/
+.venv/
+.pytest_cache/
+.mypy_cache/
+# node
+node_modules/
+.next/
+coverage/
+dist/
+.expo/
+# firebase
+.firebase/
+firebase-debug.log
+# gcp keys
+*serviceAccount*.json

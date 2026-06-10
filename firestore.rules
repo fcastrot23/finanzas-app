@@ -1,0 +1,94 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // True when the authenticated uid is a member of the given household.
+    function isMember(householdId) {
+      return request.auth != null &&
+        request.auth.uid in get(/databases/$(database)/documents/households/$(householdId)).data.members;
+    }
+
+    // True when the authenticated uid is the user document being accessed.
+    function isSelf(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    // ── households ─────────────────────────────────────────────────────────────
+    // Members can read; only the backend (Admin SDK) creates or modifies.
+    match /households/{householdId} {
+      allow read: if isMember(householdId);
+      allow write: if false; // backend only
+    }
+
+    // ── users ──────────────────────────────────────────────────────────────────
+    // A user can read/update their own document; household members can read peers.
+    match /users/{uid} {
+      allow read: if isSelf(uid) ||
+        (request.auth != null &&
+         isMember(get(/databases/$(database)/documents/users/$(uid)).data.householdId));
+      allow create: if isSelf(uid);
+      allow update: if isSelf(uid);
+      allow delete: if false; // backend only
+    }
+
+    // ── pockets ────────────────────────────────────────────────────────────────
+    match /pockets/{id} {
+      allow read: if isMember(resource.data.householdId);
+      allow write: if false; // backend only (balance mutations are computed)
+    }
+
+    // ── incomes ────────────────────────────────────────────────────────────────
+    match /incomes/{id} {
+      allow read: if isMember(resource.data.householdId);
+      allow create, update: if isMember(request.resource.data.householdId);
+      allow delete: if isMember(resource.data.householdId);
+    }
+
+    // ── fixedExpenses ──────────────────────────────────────────────────────────
+    match /fixedExpenses/{id} {
+      allow read: if isMember(resource.data.householdId);
+      allow create, update: if isMember(request.resource.data.householdId);
+      allow delete: if isMember(resource.data.householdId);
+    }
+
+    // ── debts ──────────────────────────────────────────────────────────────────
+    match /debts/{id} {
+      allow read: if isMember(resource.data.householdId);
+      allow create, update: if isMember(request.resource.data.householdId);
+      allow delete: if isMember(resource.data.householdId);
+    }
+
+    // ── plans ─────────────────────────────────────────────────────────────────
+    // Read: household members. Write: backend only (enforces baseline + approval flow).
+    match /plans/{planId} {
+      allow read: if isMember(resource.data.householdId);
+      allow write: if false; // server-only (Admin SDK)
+
+      match /lines/{lineId} {
+        allow read: if isMember(get(/databases/$(database)/documents/plans/$(planId)).data.householdId);
+        allow write: if false; // server-only
+      }
+    }
+
+    // ── transactions ───────────────────────────────────────────────────────────
+    // Members can read all household transactions; create/update must belong to same household.
+    match /transactions/{txId} {
+      allow read: if isMember(resource.data.householdId);
+      allow create, update: if isMember(request.resource.data.householdId);
+      allow delete: if isMember(resource.data.householdId);
+    }
+
+    // ── leisureBudgets ─────────────────────────────────────────────────────────
+    match /leisureBudgets/{id} {
+      allow read: if isMember(resource.data.householdId);
+      allow write: if false; // backend manages budget mutations
+    }
+
+    // ── goals ──────────────────────────────────────────────────────────────────
+    match /goals/{id} {
+      allow read: if isMember(resource.data.householdId);
+      allow create, update: if isMember(request.resource.data.householdId);
+      allow delete: if isMember(resource.data.householdId);
+    }
+  }
+}

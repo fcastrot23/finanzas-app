@@ -1,0 +1,2156 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "HogarClaro \u2014 Core API",
+    "description": "Deterministic financial engine for HogarClaro. The LLM narrates; this API computes. All money math lives in app/core (Python, pytest-tested).",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/households/{household_id}/plans": {
+      "get": {
+        "tags": [
+          "plans"
+        ],
+        "summary": "List Plans",
+        "operationId": "list_plans_households__household_id__plans_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Plan"
+                  },
+                  "title": "Response List Plans Households  Household Id  Plans Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "plans"
+        ],
+        "summary": "Create Plan",
+        "operationId": "create_plan_households__household_id__plans_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Plan"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/households/{household_id}/plans/{plan_id}": {
+      "get": {
+        "tags": [
+          "plans"
+        ],
+        "summary": "Get Plan",
+        "operationId": "get_plan_households__household_id__plans__plan_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          },
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Plan Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Plan"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/households/{household_id}/plans/{plan_id}/validate": {
+      "post": {
+        "tags": [
+          "plans"
+        ],
+        "summary": "Validate Plan",
+        "operationId": "validate_plan_households__household_id__plans__plan_id__validate_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          },
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Plan Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanValidateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/households/{household_id}/plans/{plan_id}/propose": {
+      "post": {
+        "tags": [
+          "plans"
+        ],
+        "summary": "Propose Plan",
+        "operationId": "propose_plan_households__household_id__plans__plan_id__propose_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          },
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Plan Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Plan"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/households/{household_id}/plans/{plan_id}/approve": {
+      "post": {
+        "tags": [
+          "plans"
+        ],
+        "summary": "Approve Plan",
+        "operationId": "approve_plan_households__household_id__plans__plan_id__approve_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          },
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Plan Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovalRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Plan"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/households/{household_id}/transactions": {
+      "get": {
+        "tags": [
+          "transactions"
+        ],
+        "summary": "List Transactions",
+        "description": "List transactions for the household. Filter by month (YYYY-MM) or pocket.",
+        "operationId": "list_transactions_households__household_id__transactions_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Month"
+            }
+          },
+          {
+            "name": "pocket_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Pocket Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transaction"
+                  },
+                  "title": "Response List Transactions Households  Household Id  Transactions Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "transactions"
+        ],
+        "summary": "Create Transaction",
+        "operationId": "create_transaction_households__household_id__transactions_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/households/{household_id}/transactions/{tx_id}": {
+      "get": {
+        "tags": [
+          "transactions"
+        ],
+        "summary": "Get Transaction",
+        "operationId": "get_transaction_households__household_id__transactions__tx_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          },
+          {
+            "name": "tx_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Tx Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "transactions"
+        ],
+        "summary": "Update Transaction",
+        "operationId": "update_transaction_households__household_id__transactions__tx_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          },
+          {
+            "name": "tx_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Tx Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/households/{household_id}/comparison/{month}": {
+      "get": {
+        "tags": [
+          "comparison"
+        ],
+        "summary": "Get Comparison",
+        "description": "Plan vs actual deviation for the given month (YYYY-MM). Core: API-1.5/1.6.",
+        "operationId": "get_comparison_households__household_id__comparison__month__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Month"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComparisonResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/households/{household_id}/simulate": {
+      "post": {
+        "tags": [
+          "simulation"
+        ],
+        "summary": "Simulate Expense",
+        "description": "Check if a proposed expense is feasible: green / amber / red + trade-off. Core: API-2.1.",
+        "operationId": "simulate_expense_households__household_id__simulate_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SimulateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimulateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/households/{household_id}/debts/avalanche": {
+      "get": {
+        "tags": [
+          "debts"
+        ],
+        "summary": "Get Avalanche",
+        "description": "Return debts ordered by avalanche strategy (highest rate first). Core: API-1.6.",
+        "operationId": "get_avalanche_households__household_id__debts_avalanche_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvalancheResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/households/{household_id}/leisure/status": {
+      "get": {
+        "tags": [
+          "leisure"
+        ],
+        "summary": "Get Leisure Status",
+        "description": "Current leisure budget consumption: available, spent, caps. Core: API-2.2.",
+        "operationId": "get_leisure_status_households__household_id__leisure_status_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeisureStatus"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/households/{household_id}/close-month": {
+      "post": {
+        "tags": [
+          "close-month"
+        ],
+        "summary": "Close Month Endpoint",
+        "description": "Archive the active plan, generate monthly report, and surface alerts. API-2.12/2.13.",
+        "operationId": "close_month_endpoint_households__household_id__close_month_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Month"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CloseMonthResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/households/{household_id}/alerts": {
+      "get": {
+        "tags": [
+          "close-month"
+        ],
+        "summary": "Get Alerts",
+        "description": "Generate proactive budget alerts for the household for the current (or given) month. API-2.10.",
+        "operationId": "get_alerts_households__household_id__alerts_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "household_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Household Id"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Month"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Alert"
+                  },
+                  "title": "Response Get Alerts Households  Household Id  Alerts Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat": {
+      "post": {
+        "tags": [
+          "chat"
+        ],
+        "summary": "Chat",
+        "description": "Conversational agent: narrates, simulates, explains \u2014 never computes money. API-1.15.",
+        "operationId": "chat_chat_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Alert": {
+        "properties": {
+          "alert_id": {
+            "type": "string",
+            "title": "Alert Id"
+          },
+          "household_id": {
+            "type": "string",
+            "title": "Household Id"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "description": "overspend | near_cap | unmatched_tx | low_ef"
+          },
+          "severity": {
+            "$ref": "#/components/schemas/AlertSeverity"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "pocket_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pocket Id"
+          },
+          "month": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Month"
+          }
+        },
+        "type": "object",
+        "required": [
+          "alert_id",
+          "household_id",
+          "type",
+          "severity",
+          "message"
+        ],
+        "title": "Alert"
+      },
+      "AlertSeverity": {
+        "type": "string",
+        "enum": [
+          "red",
+          "amber",
+          "info"
+        ],
+        "title": "AlertSeverity"
+      },
+      "ApprovalRequest": {
+        "properties": {
+          "uid": {
+            "type": "string",
+            "title": "Uid"
+          },
+          "approved": {
+            "type": "boolean",
+            "title": "Approved"
+          }
+        },
+        "type": "object",
+        "required": [
+          "uid",
+          "approved"
+        ],
+        "title": "ApprovalRequest"
+      },
+      "AvalancheEntry": {
+        "properties": {
+          "debt_id": {
+            "type": "string",
+            "title": "Debt Id"
+          },
+          "creditor": {
+            "type": "string",
+            "title": "Creditor"
+          },
+          "balance": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Balance"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "rate": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Rate"
+          },
+          "payment": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Payment"
+          },
+          "priority": {
+            "type": "integer",
+            "title": "Priority"
+          },
+          "months_to_payoff": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Months To Payoff"
+          }
+        },
+        "type": "object",
+        "required": [
+          "debt_id",
+          "creditor",
+          "balance",
+          "currency",
+          "rate",
+          "payment",
+          "priority"
+        ],
+        "title": "AvalancheEntry"
+      },
+      "AvalancheResponse": {
+        "properties": {
+          "household_id": {
+            "type": "string",
+            "title": "Household Id"
+          },
+          "debts": {
+            "items": {
+              "$ref": "#/components/schemas/AvalancheEntry"
+            },
+            "type": "array",
+            "title": "Debts"
+          },
+          "total_balance_usd": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Total Balance Usd",
+            "description": "All balances converted to USD"
+          }
+        },
+        "type": "object",
+        "required": [
+          "household_id",
+          "debts",
+          "total_balance_usd"
+        ],
+        "title": "AvalancheResponse"
+      },
+      "ChatMessage": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "title": "Role",
+            "description": "'user' or 'assistant'"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "role",
+          "content"
+        ],
+        "title": "ChatMessage"
+      },
+      "ChatRequest": {
+        "properties": {
+          "household_id": {
+            "type": "string",
+            "title": "Household Id"
+          },
+          "messages": {
+            "items": {
+              "$ref": "#/components/schemas/ChatMessage"
+            },
+            "type": "array",
+            "title": "Messages"
+          },
+          "stream": {
+            "type": "boolean",
+            "title": "Stream",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "household_id",
+          "messages"
+        ],
+        "title": "ChatRequest"
+      },
+      "ChatResponse": {
+        "properties": {
+          "reply": {
+            "type": "string",
+            "title": "Reply"
+          },
+          "tool_calls_made": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tool Calls Made"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reply"
+        ],
+        "title": "ChatResponse"
+      },
+      "CloseMonthResponse": {
+        "properties": {
+          "household_id": {
+            "type": "string",
+            "title": "Household Id"
+          },
+          "month": {
+            "type": "string",
+            "title": "Month"
+          },
+          "archived_plan_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archived Plan Id"
+          },
+          "alert_count": {
+            "type": "integer",
+            "title": "Alert Count"
+          },
+          "alerts": {
+            "items": {
+              "$ref": "#/components/schemas/Alert"
+            },
+            "type": "array",
+            "title": "Alerts"
+          },
+          "total_planned": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Total Planned"
+          },
+          "total_actual": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Total Actual"
+          },
+          "total_delta": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Total Delta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "household_id",
+          "month",
+          "alert_count",
+          "alerts",
+          "total_planned",
+          "total_actual",
+          "total_delta"
+        ],
+        "title": "CloseMonthResponse"
+      },
+      "ComparisonResponse": {
+        "properties": {
+          "month": {
+            "type": "string",
+            "title": "Month",
+            "description": "YYYY-MM"
+          },
+          "household_id": {
+            "type": "string",
+            "title": "Household Id"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DeviationItem"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total_planned": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Total Planned"
+          },
+          "total_actual": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Total Actual"
+          },
+          "total_delta": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Total Delta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "month",
+          "household_id",
+          "items",
+          "total_planned",
+          "total_actual",
+          "total_delta"
+        ],
+        "title": "ComparisonResponse"
+      },
+      "Currency": {
+        "type": "string",
+        "enum": [
+          "CRC",
+          "USD"
+        ],
+        "title": "Currency"
+      },
+      "DeviationItem": {
+        "properties": {
+          "pocket_id": {
+            "type": "string",
+            "title": "Pocket Id"
+          },
+          "pocket_name": {
+            "type": "string",
+            "title": "Pocket Name"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "planned": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Planned"
+          },
+          "actual": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Actual"
+          },
+          "delta": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Delta"
+          },
+          "delta_pct": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delta Pct"
+          }
+        },
+        "type": "object",
+        "required": [
+          "pocket_id",
+          "pocket_name",
+          "currency",
+          "planned",
+          "actual",
+          "delta"
+        ],
+        "title": "DeviationItem"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "version"
+        ],
+        "title": "HealthResponse"
+      },
+      "LeisureStatus": {
+        "properties": {
+          "household_id": {
+            "type": "string",
+            "title": "Household Id"
+          },
+          "period_start": {
+            "type": "string",
+            "format": "date",
+            "title": "Period Start"
+          },
+          "period_end": {
+            "type": "string",
+            "format": "date",
+            "title": "Period End"
+          },
+          "individual": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Individual"
+          },
+          "household_budget": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Household Budget"
+          }
+        },
+        "type": "object",
+        "required": [
+          "household_id",
+          "period_start",
+          "period_end",
+          "individual"
+        ],
+        "title": "LeisureStatus"
+      },
+      "LineType": {
+        "type": "string",
+        "enum": [
+          "income",
+          "expense",
+          "debt",
+          "leisure",
+          "transfer"
+        ],
+        "title": "LineType"
+      },
+      "Plan": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "household_id": {
+            "type": "string",
+            "title": "Household Id"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version",
+            "default": 1
+          },
+          "status": {
+            "$ref": "#/components/schemas/PlanStatus"
+          },
+          "period": {
+            "additionalProperties": {
+              "type": "string",
+              "format": "date"
+            },
+            "type": "object",
+            "title": "Period",
+            "description": "{\"from\": date, \"to\": date}"
+          },
+          "approvals": {
+            "additionalProperties": {
+              "type": "boolean"
+            },
+            "type": "object",
+            "title": "Approvals",
+            "description": "uid \u2192 bool; all True = proposed \u2192 active"
+          },
+          "lines": {
+            "items": {
+              "$ref": "#/components/schemas/PlanLine"
+            },
+            "type": "array",
+            "title": "Lines"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "household_id",
+          "status",
+          "period"
+        ],
+        "title": "Plan"
+      },
+      "PlanCreate": {
+        "properties": {
+          "period_from": {
+            "type": "string",
+            "format": "date",
+            "title": "Period From"
+          },
+          "period_to": {
+            "type": "string",
+            "format": "date",
+            "title": "Period To"
+          },
+          "lines": {
+            "items": {
+              "$ref": "#/components/schemas/PlanLineCreate"
+            },
+            "type": "array",
+            "title": "Lines"
+          }
+        },
+        "type": "object",
+        "required": [
+          "period_from",
+          "period_to",
+          "lines"
+        ],
+        "title": "PlanCreate"
+      },
+      "PlanLine": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "pocket_id": {
+            "type": "string",
+            "title": "Pocket Id"
+          },
+          "concept": {
+            "type": "string",
+            "title": "Concept"
+          },
+          "amount": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Amount"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "type": {
+            "$ref": "#/components/schemas/LineType"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "date",
+          "pocket_id",
+          "concept",
+          "amount",
+          "currency",
+          "category",
+          "type"
+        ],
+        "title": "PlanLine"
+      },
+      "PlanLineCreate": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "pocket_id": {
+            "type": "string",
+            "title": "Pocket Id"
+          },
+          "concept": {
+            "type": "string",
+            "title": "Concept"
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              }
+            ],
+            "title": "Amount"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "default": "general"
+          },
+          "type": {
+            "$ref": "#/components/schemas/LineType"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "pocket_id",
+          "concept",
+          "amount",
+          "currency",
+          "type"
+        ],
+        "title": "PlanLineCreate"
+      },
+      "PlanStatus": {
+        "type": "string",
+        "enum": [
+          "draft",
+          "proposed",
+          "active",
+          "archived"
+        ],
+        "title": "PlanStatus"
+      },
+      "PlanValidateResponse": {
+        "properties": {
+          "valid": {
+            "type": "boolean",
+            "title": "Valid"
+          },
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Errors"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "valid"
+        ],
+        "title": "PlanValidateResponse"
+      },
+      "SimulateRequest": {
+        "properties": {
+          "pocket_id": {
+            "type": "string",
+            "title": "Pocket Id"
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              }
+            ],
+            "title": "Amount"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "concept": {
+            "type": "string",
+            "title": "Concept"
+          },
+          "proposed_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Proposed Date"
+          },
+          "fx": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fx",
+            "description": "Override FX rate for conversion"
+          }
+        },
+        "type": "object",
+        "required": [
+          "pocket_id",
+          "amount",
+          "currency",
+          "concept",
+          "proposed_date"
+        ],
+        "title": "SimulateRequest",
+        "description": "Propose an out-of-plan expense; core returns traffic-light + trade-off."
+      },
+      "SimulateResponse": {
+        "properties": {
+          "light": {
+            "$ref": "#/components/schemas/TrafficLight"
+          },
+          "feasible": {
+            "type": "boolean",
+            "title": "Feasible"
+          },
+          "sacrifice": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sacrifice",
+            "description": "What gets deferred or reduced to fund this expense"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source",
+            "description": "Which pocket/line absorbs the expense"
+          },
+          "detail": {
+            "type": "string",
+            "title": "Detail",
+            "description": "Human-readable explanation (narrated by the agent)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "light",
+          "feasible",
+          "detail"
+        ],
+        "title": "SimulateResponse"
+      },
+      "TrafficLight": {
+        "type": "string",
+        "enum": [
+          "green",
+          "amber",
+          "red"
+        ],
+        "title": "TrafficLight"
+      },
+      "Transaction": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "household_id": {
+            "type": "string",
+            "title": "Household Id"
+          },
+          "pocket_id": {
+            "type": "string",
+            "title": "Pocket Id"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "concept": {
+            "type": "string",
+            "title": "Concept"
+          },
+          "amount": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Amount"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "fx": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fx",
+            "description": "Exchange rate at time of transaction"
+          },
+          "plan_line_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Line Id"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TxStatus"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "split": {
+            "items": {
+              "$ref": "#/components/schemas/TxSplit-Output"
+            },
+            "type": "array",
+            "title": "Split"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "household_id",
+          "pocket_id",
+          "date",
+          "concept",
+          "amount",
+          "currency",
+          "status",
+          "category"
+        ],
+        "title": "Transaction"
+      },
+      "TransactionCreate": {
+        "properties": {
+          "pocket_id": {
+            "type": "string",
+            "title": "Pocket Id"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "concept": {
+            "type": "string",
+            "title": "Concept"
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              }
+            ],
+            "title": "Amount"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "fx": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fx"
+          },
+          "plan_line_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Line Id"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category",
+            "default": "general"
+          },
+          "split": {
+            "items": {
+              "$ref": "#/components/schemas/TxSplit-Input"
+            },
+            "type": "array",
+            "title": "Split"
+          }
+        },
+        "type": "object",
+        "required": [
+          "pocket_id",
+          "date",
+          "concept",
+          "amount",
+          "currency"
+        ],
+        "title": "TransactionCreate"
+      },
+      "TransactionUpdate": {
+        "properties": {
+          "plan_line_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Line Id"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "split": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/TxSplit-Input"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Split"
+          }
+        },
+        "type": "object",
+        "title": "TransactionUpdate"
+      },
+      "TxSplit-Input": {
+        "properties": {
+          "uid": {
+            "type": "string",
+            "title": "Uid"
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              }
+            ],
+            "title": "Amount"
+          }
+        },
+        "type": "object",
+        "required": [
+          "uid",
+          "amount"
+        ],
+        "title": "TxSplit"
+      },
+      "TxSplit-Output": {
+        "properties": {
+          "uid": {
+            "type": "string",
+            "title": "Uid"
+          },
+          "amount": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Amount"
+          }
+        },
+        "type": "object",
+        "required": [
+          "uid",
+          "amount"
+        ],
+        "title": "TxSplit"
+      },
+      "TxStatus": {
+        "type": "string",
+        "enum": [
+          "in_plan",
+          "out_of_plan"
+        ],
+        "title": "TxStatus"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

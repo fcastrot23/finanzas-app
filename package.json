@@ -1,0 +1,16 @@
+{
+  "name": "finanzas-app",
+  "private": true,
+  "packageManager": "pnpm@11.5.2",
+  "scripts": {
+    "gen:api": "openapi-typescript ${API_URL:-http://localhost:8001/openapi.json} -o packages/api-client/src/schema.ts",
+    "web:dev": "pnpm --filter web dev",
+    "web:build": "pnpm --filter web build",
+    "web:lint": "pnpm --filter web lint",
+    "web:test": "pnpm --filter web test"
+  },
+  "devDependencies": {
+    "openapi-typescript": "^7",
+    "turbo": "^2"
+  }
+}
