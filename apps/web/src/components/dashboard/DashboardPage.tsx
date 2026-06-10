@@ -3,6 +3,7 @@ import { InsightCard } from "@/components/dashboard/InsightCard";
 import { MetricCard } from "@/components/dashboard/MetricCard";
 import { PlanVsRealChart } from "@/components/dashboard/PlanVsRealChart";
 import { UpcomingPayments } from "@/components/dashboard/UpcomingPayments";
+import { SpendingGuardrailModal } from "@/components/finance/SpendingGuardrailModal";
 import { AppShell } from "@/components/layout/AppShell";
 import { TopBar } from "@/components/layout/TopBar";
 import {
@@ -18,7 +19,7 @@ import {
 export function DashboardPage() {
   return (
     <AppShell>
-      <TopBar members={householdMembers} />
+      <TopBar action={<SpendingGuardrailModal />} members={householdMembers} />
 
       <div className="space-y-6">
         <FinancialPulse

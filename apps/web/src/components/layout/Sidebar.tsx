@@ -1,37 +1,43 @@
+"use client";
+
 import {
   Bell,
   CalendarDays,
   CreditCard,
+  FileChartColumn,
   Goal,
   Home,
   Landmark,
   LayoutDashboard,
-  PieChart,
   Settings,
   UsersRound,
   WalletCards,
 } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
 const navigationItems = [
-  { label: "Resumen", icon: LayoutDashboard, active: true },
-  { label: "Plan", icon: CalendarDays },
-  { label: "Transacciones", icon: CreditCard },
-  { label: "Bolsillos", icon: WalletCards },
-  { label: "Presupuestos", icon: PieChart },
-  { label: "Deudas", icon: Landmark },
-  { label: "Metas", icon: Goal },
-  { label: "Alertas", icon: Bell },
+  { label: "Resumen", icon: LayoutDashboard, href: "/" },
+  { label: "Onboarding", icon: Goal, href: "/onboarding" },
+  { label: "Plan", icon: CalendarDays, href: "/plan" },
+  { label: "Plan vs Real", icon: FileChartColumn, href: "/plan-vs-real" },
+  { label: "Transacciones", icon: CreditCard, href: "/transactions" },
+  { label: "Bolsillos", icon: WalletCards, href: "/pockets" },
+  { label: "Deudas", icon: Landmark, href: "/debts" },
+  { label: "Alertas", icon: Bell, href: "/alerts" },
 ];
 
 const secondaryItems = [
-  { label: "Hogar", icon: UsersRound },
-  { label: "Configuración", icon: Settings },
+  { label: "Hogar", icon: UsersRound, href: "/pockets" },
+  { label: "Configuración", icon: Settings, href: "/onboarding" },
 ];
 
 export function Sidebar() {
+  const pathname = usePathname();
+
   return (
     <aside className="hidden min-h-screen w-72 shrink-0 border-r border-border bg-surface px-5 py-7 lg:flex lg:flex-col">
       <div className="mb-9 flex items-center gap-3">
@@ -45,7 +51,15 @@ export function Sidebar() {
 
       <nav className="space-y-2" aria-label="Navegación principal">
         {navigationItems.map((item) => (
-          <SidebarItem key={item.label} {...item} />
+          <SidebarItem
+            key={item.label}
+            {...item}
+            active={
+              item.href === "/"
+                ? pathname === "/" || pathname === "/dashboard"
+                : pathname.startsWith(item.href)
+            }
+          />
         ))}
       </nav>
 
@@ -53,7 +67,11 @@ export function Sidebar() {
 
       <nav className="space-y-2" aria-label="Navegación del hogar">
         {secondaryItems.map((item) => (
-          <SidebarItem key={item.label} {...item} />
+          <SidebarItem
+            active={pathname.startsWith(item.href)}
+            key={item.label}
+            {...item}
+          />
         ))}
       </nav>
 
@@ -73,20 +91,21 @@ export function Sidebar() {
 type SidebarItemProps = {
   label: string;
   icon: typeof LayoutDashboard;
+  href: string;
   active?: boolean;
 };
 
-function SidebarItem({ label, icon: Icon, active }: SidebarItemProps) {
+function SidebarItem({ label, icon: Icon, href, active }: SidebarItemProps) {
   return (
-    <a
+    <Link
       className={cn(
         "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-secondary transition-colors hover:bg-brandSoft hover:text-brand",
         active && "bg-brandSoft text-brand",
       )}
-      href="#"
+      href={href}
     >
       <Icon aria-hidden="true" className="h-5 w-5" />
       {label}
-    </a>
+    </Link>
   );
 }

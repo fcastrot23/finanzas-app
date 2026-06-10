@@ -16,6 +16,7 @@ const paymentIcon = {
 };
 
 const statusLabels: Record<PaymentStatus, string> = {
+  planned: "Planificado",
   paid: "Listo",
   upcoming: "Próximo",
   review: "Revisar",
@@ -23,6 +24,7 @@ const statusLabels: Record<PaymentStatus, string> = {
 };
 
 const statusTones: Record<PaymentStatus, "positive" | "brand" | "warning" | "risk"> = {
+  planned: "brand",
   paid: "positive",
   upcoming: "brand",
   review: "warning",
